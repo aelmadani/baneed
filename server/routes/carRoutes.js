@@ -2,24 +2,97 @@ const requireLogin = require("../middleware/requireLogin");
 const User = require("../models/User");
 const Car = require("../models/Car");
 
+const path = require("path");
+const multer = require("multer");
+
+// Set The Storage Engine
+const storage = multer.diskStorage({
+  destination: "../client/public/uploads",
+  filename: function(req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  }
+});
+
+// Init Upload
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 }
+}).single("carImage");
+
 module.exports = (app) => {
   // Route: POST api/cars
   // Desc: Create new car
   // Access: Private
-  app.post("/api/cars", requireLogin, async (req, res) => {
+  app.post("/api/cars", async (req, res) => {
     try {
-      userId = await User.findById(req.user)._id;
-      const newCar = new Car({
-        user: req.user.id,
-        carId: req.body.carId,
-        price: req.body.price
-      });
+      // userId = await User.findById(req.user)._id;
+      userId = "5e0874124a2fc00c4310dfa1";
+      const {
+        make,
+        model,
+        trim,
+        mileage,
+        color,
+        price,
+        year,
+        city,
+        autoGear,
+        aircon,
+        parkCam,
+        description,
+        images
+      } = req.body;
+      const newCarData = {};
+      newCarData.user = userId;
+      if (make) newCarData.make = make;
+      if (model) newCarData.model = model;
+      if (trim) newCarData.trim = trim;
+      if (mileage) newCarData.mileage = mileage;
+      if (color) newCarData.color = color;
+      if (price) newCarData.price = price;
+      if (year) newCarData.year = year;
+      if (city) newCarData.city = city;
+      if (autoGear) newCarData.autoGear = autoGear;
+      if (aircon) newCarData.aircon = aircon;
+      if (parkCam) newCarData.parkCam = parkCam;
+      if (description) newCarData.description = description;
+      if (images) newCarData.images = images;
+
+      const newCar = new Car(newCarData);
+      console.log(newCar.toJSON());
+
       const car = await newCar.save();
       res.json(car);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
     }
+  });
+
+  // Route: POST api/upload
+  // Desc: upload image
+  // Access: Private
+
+  // app.post("/api/upload", upload.single("carImage"), function(req, res, next) {
+  //   // req.file is the `avatar` file
+  //   // req.body will hold the text fields, if there were any
+  // });
+  app.post("/api/upload", (req, res) => {
+    upload(req, res, (err) => {
+      if (err) {
+        console.error(err);
+      } else {
+        if (req.file == undefined) {
+          console.log("Error: No File Selected!");
+        } else {
+          console.log("succes");
+          res.status(200);
+        }
+      }
+    });
   });
 
   // Route: GET api/cars
@@ -39,6 +112,7 @@ module.exports = (app) => {
   // Desc: View car by id
   // Access: Public
   app.get("/api/cars/:id", async (req, res) => {
+    console.log(req.params.id);
     try {
       const car = await Car.findById(req.params.id);
       if (!car) {
@@ -116,7 +190,6 @@ module.exports = (app) => {
   // Route: DELETE api/cars/:id
   // Desc: Delete car by id
   // Access: Private
-
   app.delete("/api/cars/:id", requireLogin, async (req, res) => {
     try {
       const car = await Car.findById(req.params.id);
@@ -160,11 +233,25 @@ module.exports = (app) => {
   // Route: GET api/search
   // Desc: Search for a car from url queries
   // Access: Public
-
   app.get("/api/search", async (req, res) => {
+    //Search query
     const queries = req.query;
-    console.log(queries);
-    const cars = await Car.find(queries);
+    const search = {};
+    if (queries.make) search.make = queries.make;
+    if (queries.model) search.model = queries.model;
+    if (queries.autoGear) search.autoGear = queries.autoGear;
+    if (queries.parkCam) search.parkCam = queries.parkCam;
+    if (queries.aircon) search.aircon = queries.aircon;
+    if (queries.color) search.color = queries.color;
+
+    if (queries.minYear) search.year = { $gte: queries.minYear };
+    if (queries.maxYear) search.year["$lte"] = queries.maxYear;
+    if (queries.maxMileage) search.mileage = { $lte: queries.maxMileage };
+    if (queries.maxPrice) search.price = { $lte: queries.maxPrice };
+
+    console.log(search);
+
+    const cars = await Car.find(search);
     res.json(cars);
   });
 };

@@ -1,7 +1,9 @@
 const passport = require("passport");
-const requireLogin = require("../middleware/requireLogin");
+
+//const requireLogin = require("../middleware/requireLogin");
 const User = require("../models/User");
-const bcrypt = require("bcryptjs");
+const keys = require("../config/keys");
+// const { ensureAuthenticated } = require("../config/auth");
 
 module.exports = (app) => {
   // Route: auth/facebook
@@ -18,97 +20,116 @@ module.exports = (app) => {
     (req, res) => {
       //   res.send({ hej: "logged" });
       console.log(req.user);
-      res.redirect("/api/dashboard");
+      res.redirect(keys.redirectDomain);
     }
   );
 
-  // Route: api/dashboard
-  // Desc: Facebook Authentication
-  // Access: Public
-  app.get("/api/dashboard", requireLogin, (req, res) => {
+  app.get("/api/user", (req, res) => {
     res.send(req.user);
-    console.log(req.user);
-  });
-
-  // Route: /api/register
-  // Desc: register local acount
-  // Access: Public
-  app.post("/api/register", (req, res) => {
-    const { firstName, lastName, email, password, password2 } = req.body;
-    let errors = [];
-    console.log(req.body);
-
-    //Check required fields
-    if (!email || !firstName || !lastName || !password || !password2) {
-      errors.push({ msg: "Please fill all fields" });
-      console.log("Please fill all fields");
-    }
-
-    // Check password match
-    if (password !== password2) {
-      errors.push({ msg: "Passwords not matching" });
-      console.log("Passwords not matching");
-    }
-
-    // Check password length
-    if (password.length < 6) {
-      errors.push({ msg: "Password should be at least 6 characters" });
-      console.log("Password should be at least 6 characters");
-    }
-
-    if (errors.length > 0) {
-      // Show error
-    } else {
-      //Validartion pass
-      User.findOne({ email: email }).then((user) => {
-        if (user) {
-          // error exists
-          errors.push({ msg: "email already registered" });
-        } else {
-          const newUser = new User({
-            firstName,
-            lastName,
-            email,
-            password
-          });
-
-          // Hash password
-          bcrypt.genSalt(10, (err, salt) =>
-            bcrypt.hash(newUser.password, salt, (err, hash) => {
-              if (err) console.log(err);
-
-              newUser.password = hash;
-              console.log(newUser);
-              // Save user
-              newUser
-                .save()
-                .then((user) => {
-                  //res.redirect("/login");
-                  res.send(newUser);
-                })
-                .catch((err) => console.log(err));
-            })
-          );
-        }
-      });
-    }
-  });
-
-  // Route: /auth/login
-  // Desc: login to local acount
-  // Access: Public
-  app.post("/auth/login", (req, res, next) => {
-    passport.authenticate("local", {
-      successRedirect: "/api/dashboard",
-      failureRedirect: "/auth/login"
-    })(req, res, next);
   });
 
   // Route: /auth/logout
   // Desc: Logout
   // Access: Public
-  app.get("/auth/logout", (req, res) => {
+  app.get("/api/logout", (req, res) => {
     req.logout();
-    res.redirect("/auth/login");
+    req.flash("success_msg", "You are logged out");
+    res.redirect("/");
   });
+
+  // // Route: api/dashboard
+  // // Desc: Facebook Authentication
+  // // Access: Public
+  // app.get("/api/dashboard", ensureAuthenticated, (req, res) => {
+  //   res.send(req.user);
+  //   console.log(req.user);
+  // });
+
+  // // Route: /api/register
+  // // Desc: register local acount
+  // // Access: Public
+  // app.post("/api/register", (req, res) => {
+  //   const { firstName, lastName, email, password } = req.body;
+  //   let errors = [];
+  //   console.log(req.body);
+
+  //   //Check required fields
+  //   if (!email || !firstName || !lastName || !password) {
+  //     errors.push({ msg: "Please fill all fields" });
+  //     console.log("Please fill all fields");
+  //   }
+
+  //   // Check password length
+  //   if (password.length < 6) {
+  //     errors.push({ msg: "Password should be at least 6 characters" });
+  //     console.log("Password should be at least 6 characters");
+  //   }
+
+  //   if (errors.length > 0) {
+  //     // Show error
+  //   } else {
+  //     //Validartion pass
+  //     User.findOne({ email: email }).then((user) => {
+  //       if (user) {
+  //         // error exists
+  //         errors.push({ msg: "email already registered" });
+  //       } else {
+  //         const newUser = new User({
+  //           firstName,
+  //           lastName,
+  //           email,
+  //           password
+  //         });
+
+  //         // Hash password
+  //         bcrypt.genSalt(10, (err, salt) =>
+  //           bcrypt.hash(newUser.password, salt, (err, hash) => {
+  //             if (err) console.log(err);
+
+  //             newUser.password = hash;
+  //             console.log(newUser);
+  //             // Save user
+  //             newUser
+  //               .save()
+  //               .then((user) => {
+  //                 req.flash(
+  //                   "success_msg",
+  //                   "You are now registered and can log in"
+  //                 );
+  //                 //res.redirect("/login");
+  //                 res.send(newUser);
+  //                 //res.redirect("/auth/login");
+  //               })
+  //               .catch((err) => console.log(err));
+  //           })
+  //         );
+  //       }
+  //     });
+  //   }
+  // });
+
+  // // @route   GET api/auth
+  // // @desc    Test route
+  // // @access  Public
+  // app.get("/api/auth", ensureAuthenticated, async (req, res) => {
+  //   try {
+  //     //const user = await User.findById(req.user.id).select("-password");
+  //     console.log(req.body.user);
+  //     res.json(req.body.user);
+  //   } catch (err) {
+  //     console.error(err.message);
+  //     res.status(500).send("Server Error");
+  //   }
+  // });
+
+  // // Route: /api/login
+  // // Desc: login to local acount
+  // // Access: Public
+  // app.post("/api/login", (req, res, next) => {
+  //   passport.authenticate("local", {
+  //     successRedirect: "/api/dashboard",
+  //     failureRedirect: "/api/login",
+  //     failureFlash: true
+  //   })(req, res, next);
+  // });
 };

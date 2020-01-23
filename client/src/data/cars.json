@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "name": "BMW",
+    "value": "bmw",
+    "parent_id": "0"
+  },
+  {
+    "id": "2",
+    "name": "Mazda",
+    "value": "mazda",
+    "parent_id": "0"
+  },
+  {
+    "id": "3",
+    "name": "Toyota",
+    "value": "toyota",
+    "parent_id": "0"
+  },
+  {
+    "id": "4",
+    "name": "I3",
+    "value": "i3",
+    "parent_id": "1"
+  },
+  {
+    "id": "5",
+    "name": "320i",
+    "value": "320i",
+    "parent_id": "1"
+  },
+  {
+    "id": "6",
+    "name": "530",
+    "value": "530",
+    "parent_id": "1"
+  },
+  {
+    "id": "7",
+    "name": "3",
+    "value": "3",
+    "parent_id": "2"
+  },
+  {
+    "id": "8",
+    "name": "6",
+    "value": "6",
+    "parent_id": "2"
+  },
+  {
+    "id": "9",
+    "name": "626",
+    "value": "626",
+    "parent_id": "2"
+  },
+  {
+    "id": "10",
+    "name": "Yaris",
+    "value": "yaris",
+    "parent_id": "3"
+  },
+  {
+    "id": "11",
+    "name": "Avensis",
+    "value": "avensis",
+    "parent_id": "3"
+  },
+  {
+    "id": "12",
+    "name": "Corolla",
+    "value": "corolla",
+    "parent_id": "3"
+  }
+]
