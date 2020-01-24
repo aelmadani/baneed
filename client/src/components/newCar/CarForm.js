@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link, Redirect, withRouter } from "react-router-dom";
+
 import { connect } from "react-redux";
 import { newCar } from "../../actions/index";
+
 import FormPage1 from "./FormPage1";
 import FormPage2 from "./FormPage2";
 import FormPage3 from "./FormPage3";
@@ -21,8 +23,7 @@ const CarForm = (props) => {
   const [aircon, setAircon] = useState(false);
   const [parkCam, setParkCam] = useState(false);
   const [description, setDescription] = useState("");
-  const [images, setImages] = useState([]);
-  const [filename, setFilename] = useState([]);
+  const [filename, setFilename] = useState("");
 
   const values = {
     make,
@@ -37,34 +38,32 @@ const CarForm = (props) => {
     aircon,
     parkCam,
     description,
-    images,
     filename
   };
+  const handleFilename = (e) => {
+    const imageExt = e.currentTarget.files[0].name.split(".").pop();
+    const name = "IMAGE-" + Date.now() + "." + imageExt;
+    setFilename(name);
 
+    // filename ok mangler at ændre den på billede
+  };
   const submit = () => {
     const formData = {};
-    formData["make"] = values.make;
-    formData["model"] = values.model;
-    formData["trim"] = values.trim;
-    formData["year"] = values.year;
-    formData["mileage"] = values.mileage;
-    formData["color"] = values.color;
-    formData["price"] = values.price;
-    formData["city"] = values.city;
-    formData["autoGear"] = values.autoGear;
-    formData["aircon"] = values.aircon;
-    formData["parkCam"] = values.parkCam;
-    formData["description"] = values.description;
-    formData["filename"] = values.filename;
+    formData["make"] = make;
+    formData["model"] = model;
+    formData["trim"] = trim;
+    formData["year"] = year;
+    formData["mileage"] = mileage;
+    formData["color"] = color;
+    formData["price"] = price;
+    formData["city"] = city;
+    formData["autoGear"] = autoGear;
+    formData["aircon"] = aircon;
+    formData["parkCam"] = parkCam;
+    formData["description"] = description;
+    formData["filename"] = filename;
 
-    const imageData = new FormData();
-    imageData.append("carImage", images);
-    // const config = {
-    //     headers: {
-    //         'content-type': 'multipart/form-data'
-    //     }
-    // };
-    props.newCar(formData, imageData);
+    props.newCar(formData);
   };
 
   switch (step) {
@@ -110,9 +109,7 @@ const CarForm = (props) => {
           values={values}
           nextStep={() => setStep(step + 1)}
           prevStep={() => setStep(step - 1)}
-          handleChangeImages={(e) => setImages(e.currentTarget.value)}
-          setImages={(e) => setImages(e.currentTarget.files[0])}
-          setFilename={(e) => setFilename(e.currentTarget.files[0].name)}
+          setFilename={setFilename}
           saveCar={() => submit()}
         />
       );

@@ -33,7 +33,7 @@ export const search = (queryString) => async (dispatch) => {
   }
 };
 
-export const newCar = (formData, imageData) => async (dispatch) => {
+export const newCar = (formData) => async (dispatch) => {
   // const images=formData.get('images');
   // formData.delete('images');
   console.log(formData);
@@ -43,11 +43,11 @@ export const newCar = (formData, imageData) => async (dispatch) => {
         "Content-Type": "application/json"
       }
     });
-    const resCar = await axios.post(`/api/upload`, imageData, {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    });
+    // await axios.post(`/api/upload`, imageData, {
+    //   headers: {
+    //     "Content-Type": "multipart/form-data"
+    //   }
+    // });
 
     dispatch({
       type: actionTypes.NEWCAR_SUCCESS,

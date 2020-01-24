@@ -1,39 +1,81 @@
-import React, { Fragment } from "react";
-import CheckBoxField from "../search/elements/CheckBoxField";
-import TextField from "../search/elements/TextField";
+import React, { useState } from "react";
 import "../search/elements/styles.css";
-import axios from "axios";
+// file upload imports
+import FileUploader from "react-firebase-file-uploader";
+import firebase from "firebase";
+import firebaseConfig from "../../firebaseConfig";
+firebase.initializeApp(firebaseConfig);
+//
 
 const FormPage4 = (props) => {
   const { values } = props;
 
+  const [image, setImage] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [progress, setProgress] = useState(0);
+
+  const handleUploadStart = () => {
+    setProgress(0);
+  };
+
+  const handleUploadSuccess = (filename) => {
+    setImage(filename);
+    setProgress(100);
+    firebase
+      .storage()
+      .ref("carImages")
+      .child(filename)
+      .getDownloadURL()
+      .then((url) => {
+        setImageUrl(url);
+        props.setFilename(url);
+      });
+  };
+
   const next = (e) => {
     e.preventDefault();
 
-    // props.saveCar();
+    props.saveCar();
   };
   const previous = (e) => {
     e.preventDefault();
     props.prevStep();
   };
-  const onChange = (e) => {
-    props.setImages(e);
-    props.setFilename(e);
-  };
+
+  console.log(imageUrl);
+  console.log(progress);
+  // const onChange = (e) => {
+  //   props.setImages(e);
+  //   props.setFilename(e);
+  // };
   return (
     <div className="form-wrapper col s12 m6">
       <form
         className="form"
-        action="/api/upload"
-        method="post"
-        encType="multipart/form-data"
+        // action="/api/upload"
+        // method="post"
+        // encType="multipart/form-data"
       >
         <fieldset className="field-wrapper">
           <span className="checkbox-group">Add Images</span>
         </fieldset>
 
-        <div class="custom-file mb-4">
+        <FileUploader
+          accept="image/*"
+          name="carImage"
+          storageRef={firebase.storage().ref("carImages")}
+          onUploadStart={handleUploadStart}
+          onUploadSuccess={handleUploadSuccess}
+          filename={"IMG-" + Date.now()}
+        />
+
+        <div>
+          <img src="" alt="" />
+        </div>
+
+        {/* <div class="custom-file mb-4">
           <input
+            id="img"
             type="file"
             className="custom-file-input"
             name="carImage"
@@ -43,21 +85,21 @@ const FormPage4 = (props) => {
           <label className="custom-file-label" for="customFile">
             {props.values.filename}
           </label>
-        </div>
+        </div> */}
 
         <fieldset className="field-wrapper">
           <input
             className="btn"
             type="submit"
             value="Save Car"
-            // onClick={(e) => next(e)}
+            onClick={(e) => next(e)}
           />
-          {/* <input
+          <input
             className="btn"
             type="submit"
             value="Previous"
             onClick={(e) => previous(e)}
-          /> */}
+          />
         </fieldset>
       </form>
     </div>

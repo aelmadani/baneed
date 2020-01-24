@@ -5,23 +5,6 @@ const Car = require("../models/Car");
 const path = require("path");
 const multer = require("multer");
 
-// Set The Storage Engine
-const storage = multer.diskStorage({
-  destination: "../client/public/uploads",
-  filename: function(req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  }
-});
-
-// Init Upload
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1000000 }
-}).single("carImage");
-
 module.exports = (app) => {
   // Route: POST api/cars
   // Desc: Create new car
@@ -43,7 +26,7 @@ module.exports = (app) => {
         aircon,
         parkCam,
         description,
-        images
+        filename
       } = req.body;
       const newCarData = {};
       newCarData.user = userId;
@@ -59,7 +42,7 @@ module.exports = (app) => {
       if (aircon) newCarData.aircon = aircon;
       if (parkCam) newCarData.parkCam = parkCam;
       if (description) newCarData.description = description;
-      if (images) newCarData.images = images;
+      if (filename) newCarData.filename = filename;
 
       const newCar = new Car(newCarData);
       console.log(newCar.toJSON());
@@ -81,6 +64,17 @@ module.exports = (app) => {
   //   // req.body will hold the text fields, if there were any
   // });
   app.post("/api/upload", (req, res) => {
+    // Set The Storage Engine
+    const storage = multer.diskStorage({
+      destination: "../client/public/uploads",
+      filename: "ka.png"
+    });
+
+    // Init Upload
+    const upload = multer({
+      storage: storage,
+      limits: { fileSize: 1000000 }
+    }).single("carImage");
     upload(req, res, (err) => {
       if (err) {
         console.error(err);
@@ -89,6 +83,8 @@ module.exports = (app) => {
           console.log("Error: No File Selected!");
         } else {
           console.log("succes");
+          console.log(req.files);
+
           res.status(200);
         }
       }

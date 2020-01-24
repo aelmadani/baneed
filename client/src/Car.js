@@ -33,6 +33,11 @@ const Car = (props) => {
         <p>{clickedCar.color}</p>
         <p>City: </p>
         <p>{clickedCar.city}</p>
+        <br />
+        <br />
+        <div>
+          <img src={clickedCar.filename} alt="" />
+        </div>
       </div>
     </div>
   );
