@@ -28,5 +28,16 @@ view fav list
 add to fav list
 delete car from fav list
 
-Mangler:
-Søgning backend eller frontend??
+Sider:
+
+Landing : / N CREATED
+Advanced Search: /search N CREATED
+Cars: /cars N CREATED
+Car: /car/:id N CREATED
+Favorites: /favorites P INITIALIZED
+Dashiboard /dashboard P INITIALIZED
+userCars: /user/:id/cars N NOT
+Sellcar: /new-car P CREATED
+Login: /login N CREATED
+Updatecar: /update-car/:d P INITIALIZED
+NotFound: N NOT

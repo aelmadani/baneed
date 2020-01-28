@@ -1,12 +1,11 @@
 import React from "react";
 //import { Link, Redirect } from "react-router-dom";
-import SimpleSearch from "../search/SimpleSearch";
-
+import SimpleSearch from "../searchComponents/SimpleSearch";
 import { connect } from "react-redux";
 
 const Landing = (props) => {
   return (
-    <div className="container">
+    <div className="landing full-height">
       <SimpleSearch />
     </div>
   );

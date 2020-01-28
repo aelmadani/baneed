@@ -3,10 +3,9 @@ import { Link, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { search } from "../../actions/index";
 
-import ListField from "./elements/ListField";
-import CheckBoxField from "./elements/CheckBoxField";
+import ListField from "../layoutComponents/formElements/ListField";
 import cars from "../../data/cars.json";
-import "./elements/styles.css";
+// import "./elements/styles.css";
 
 const makeList = cars.filter((car) => car.parent_id === "0");
 const mileage = [
@@ -16,14 +15,6 @@ const mileage = [
   { value: "50000", name: "50.0000 km" },
   { value: "100000", name: "100.000 km" },
   { value: "999999", name: "Maximum" }
-];
-
-const colors = [
-  { value: "white", name: "White" },
-  { value: "black", name: "Black" },
-  { value: "silver", name: "Silver" },
-  { value: "red", name: "Red" },
-  { value: "blue", name: "Blue" }
 ];
 
 const maxPrices = [
@@ -47,23 +38,12 @@ const years = (startYear) => {
   return years.reverse();
 };
 
-const AdvancedSearch = (props) => {
-  const [toResults, setToResults] = useState(false);
-
+const SimpleSearch = (props) => {
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
-  // const [trim, setTrim] = useState("");
   const [minYear, setMinYear] = useState("2000");
-  const [maxYear, setMaxYear] = useState("2020");
   const [maxMileage, setMaxMileage] = useState(999999);
-  const [color, setColor] = useState("");
-  // const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(999999);
-  // const [city, setCity] = useState("");
-  const [autoGear, setAutoGear] = useState(false);
-
-  const [aircon, setAircon] = useState(false);
-  const [parkCam, setParkCam] = useState(false);
 
   const getCarModelField = () => {
     if (!make) {
@@ -100,19 +80,12 @@ const AdvancedSearch = (props) => {
       if (model !== "") searchObj.model = model;
     }
     searchObj.minYear = minYear;
-    searchObj.maxYear = maxYear;
     searchObj.maxMileage = maxMileage;
     searchObj.maxPrice = maxPrice;
-    if (color !== "") searchObj.color = color;
-    if (autoGear === true) searchObj.autoGear = autoGear;
-    if (aircon === true) searchObj.aircon = aircon;
-    if (parkCam === true) searchObj.parkCam = parkCam;
 
     var queryString = Object.keys(searchObj)
       .map((key) => key + "=" + searchObj[key])
       .join("&");
-
-    console.log("query string from advanced " + queryString);
 
     props.history.push("/cars?" + queryString);
 
@@ -140,13 +113,6 @@ const AdvancedSearch = (props) => {
           listName="Max Mileage"
           options={mileage}
         />
-        <ListField
-          name="color"
-          value={color}
-          handleOnChange={(e) => setColor(e.currentTarget.value)}
-          listName="Car Color"
-          options={colors}
-        />
 
         <ListField
           name="max-price"
@@ -163,32 +129,7 @@ const AdvancedSearch = (props) => {
           listName="From Year"
           options={years()}
         />
-        <ListField
-          name="max-year"
-          value={maxYear}
-          handleOnChange={(e) => setMaxYear(e.currentTarget.value)}
-          listName="To Year"
-          options={years()}
-        />
 
-        <CheckBoxField
-          name="auto-gear"
-          option="Automatic Gear"
-          toggleCheckbox={() => setAutoGear(!autoGear)}
-          checkboxValue={autoGear}
-        />
-        <CheckBoxField
-          name="aircon"
-          option="Air Condition"
-          toggleCheckbox={() => setAircon(!aircon)}
-          checkboxValue={aircon}
-        />
-        <CheckBoxField
-          name="park-cam"
-          option="Parking Camera"
-          toggleCheckbox={() => setParkCam(!parkCam)}
-          checkboxValue={parkCam}
-        />
         <fieldset className="field-wrapper">
           <input className="btn" type="submit" value="Search!" />
         </fieldset>
@@ -197,4 +138,4 @@ const AdvancedSearch = (props) => {
   );
 };
 
-export default connect(null, { search })(withRouter(AdvancedSearch));
+export default connect(null, { search })(withRouter(SimpleSearch));

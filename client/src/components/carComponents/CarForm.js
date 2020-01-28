@@ -23,7 +23,7 @@ const CarForm = (props) => {
   const [aircon, setAircon] = useState(false);
   const [parkCam, setParkCam] = useState(false);
   const [description, setDescription] = useState("");
-  const [filename, setFilename] = useState("");
+  const [imageLinks, setImageLinks] = useState("");
 
   const values = {
     make,
@@ -38,15 +38,9 @@ const CarForm = (props) => {
     aircon,
     parkCam,
     description,
-    filename
+    imageLinks
   };
-  const handleFilename = (e) => {
-    const imageExt = e.currentTarget.files[0].name.split(".").pop();
-    const name = "IMAGE-" + Date.now() + "." + imageExt;
-    setFilename(name);
 
-    // filename ok mangler at ændre den på billede
-  };
   const submit = () => {
     const formData = {};
     formData["make"] = make;
@@ -61,7 +55,7 @@ const CarForm = (props) => {
     formData["aircon"] = aircon;
     formData["parkCam"] = parkCam;
     formData["description"] = description;
-    formData["filename"] = filename;
+    formData["imageLinks"] = imageLinks;
 
     props.newCar(formData);
   };
@@ -109,7 +103,7 @@ const CarForm = (props) => {
           values={values}
           nextStep={() => setStep(step + 1)}
           prevStep={() => setStep(step - 1)}
-          setFilename={setFilename}
+          setImageLinks={setImageLinks}
           saveCar={() => submit()}
         />
       );

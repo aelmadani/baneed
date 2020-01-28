@@ -8,28 +8,28 @@ class Navbar extends Component {
     if (this.props.auth) {
       return [
         <li key="1">
-          <Link to="/search">Search</Link>
+          <Link to="/search">SEARCH</Link>
         </li>,
         <li key="2">
-          <Link to="/newcar">Sell your car</Link>
+          <Link to="/newcar">SELL</Link>
         </li>,
         <li key="3">
-          <Link to="/favorites">My Favorites</Link>
+          <Link to="/favorites">FAVORITES</Link>
         </li>,
-        <li key="4" style={{ margin: "0 10px" }}>
-          <Link to={"/profile"}>{this.props.auth.firstName}</Link>
+        <li key="4">
+          <Link to={"/dashboard"}>DASHBOARD</Link>
         </li>,
         <li key="5">
-          <a href="/api/logout">Logout</a>
+          <a href="/api/logout">LOGOUT</a>
         </li>
       ];
     } else {
       return [
         <li key="6" className="sidenav-links">
-          <Link to="/search">Search</Link>
+          <Link to="/search">SEARCH</Link>
         </li>,
         <li key="7" className="sidenav-links">
-          <Link to="/login">Login</Link>
+          <Link to="/login">LOGIN</Link>
         </li>
       ];
     }

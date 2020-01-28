@@ -17,7 +17,8 @@ const CarSchema = new mongoose.Schema({
   aircon: { type: Boolean, default: false },
   parkCam: { type: Boolean, default: false },
   description: { type: String, required: false },
-  filename: { type: String, required: false }
+  imageLinks: { type: Array, required: false },
+  dateCreated: { type: Date, default: Date.now }
 });
 
 module.exports = Car = mongoose.model("cars", CarSchema);

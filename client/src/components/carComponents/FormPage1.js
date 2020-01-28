@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
-import ListField from "../search/elements/ListField";
-import InputField from "../search/elements/InputField";
-import "../search/elements/styles.css";
+import ListField from "../layoutComponents/formElements/ListField";
+import InputField from "../layoutComponents/formElements/InputField";
+// import "../search/elements/styles.css";
 import cars from "../../data/cars.json";
 
 const makeList = cars.filter((car) => car.parent_id === "0");
@@ -42,7 +42,7 @@ const FormMainDetails = (props) => {
     );
   };
   return (
-    <div className="form-wrapper col s12 m6">
+    <div className="form-wrapper col s12 m6 full-height">
       <form className="form">
         {getCarMakeField()}
         {getCarModelField()}

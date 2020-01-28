@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import FacebookBtn from "./layout/FacebookBtn/FacebookBtn";
+import FacebookBtn from "../layoutComponents/FacebookBtn/FacebookBtn";
 import { connect } from "react-redux";
-import { setAlert } from "../actions/alert";
+import { setAlert } from "../../actions";
 
 const Login = (props) => {
   const [formData, setFormData] = useState({

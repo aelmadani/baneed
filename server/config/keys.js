@@ -9,5 +9,5 @@ module.exports = {
   stripePublishableKey: "",
   stripeSecretKey: "",
   sendGridKey: "",
-  redirectDomain: "http://localhost:3000"
+  redirectDomain: "http://localhost:3000/dashboard"
 };

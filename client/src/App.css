@@ -14,12 +14,26 @@
 }
 
 body {
+  margin: 0;
+  height: 100vh;
+  /* overflow: hidden; */
+}
+
+.full-height {
+  height: 100vh !important;
+  /* overflow: hidden; */
+}
+
+body {
   font-family: "Raleway", sans-serif;
   font-size: 1rem;
   line-height: 1.6;
   background-color: #fff;
   color: #333;
   padding: 0;
+}
+.form-wrapper {
+  top: 10% !important;
 }
 
 a {
@@ -131,6 +145,10 @@ img {
 }
 
 .btn {
+  padding: 0 !important;
+  width: 15rem;
+}
+/* .btn {
   display: inline-block;
   background: var(--light-color);
   color: #333;
@@ -141,7 +159,8 @@ img {
   margin-right: 0.5rem;
   transition: opacity 0.2s ease-in;
   outline: none;
-}
+  text-align: center;
+} */
 
 .badge {
   font-size: 0.8rem;
@@ -160,13 +179,13 @@ img {
   color: #333;
 }
 
-.btn-primary,
+/* .btn-primary,
 .bg-primary,
 .badge-primary,
 .alert-primary {
   background: var(--primary-color);
   color: #fff;
-}
+} */
 
 .btn-light,
 .bg-light,
@@ -176,7 +195,7 @@ img {
   color: #333;
 }
 
-.btn-dark,
+/* .btn-dark,
 .bg-dark,
 .badge-dark,
 .alert-dark {
@@ -216,7 +235,7 @@ img {
 .bg-light,
 .badge-light {
   border: #ccc solid 1px;
-}
+} */
 
 .round-img {
   border-radius: 50%;
@@ -316,6 +335,9 @@ i.fa-car {
 .landing {
   position: relative;
   height: 100vh;
+  background-image: url("./data/bmw_background.jpg");
+  background-size: cover;
+  overflow: hidden;
 }
 
 .landing-inner {
@@ -331,7 +353,7 @@ i.fa-car {
 }
 
 /* Profiles Page */
-.profile {
+.large-list {
   display: grid;
   grid-template-columns: 2fr 4fr 2fr;
   align-items: left;
@@ -371,7 +393,7 @@ i.fa-car {
 }
 
 .profile-top .icons a:hover {
-  color: var(--dark-color);
+  /* color: var(--dark-color); */
   text-decoration: none !important;
 }
 
@@ -469,6 +491,15 @@ i.fa-car {
   font-size: 0.8rem;
   margin-bottom: 0.5rem;
 }
+.large-list img {
+  width: 200px;
+  margin: auto;
+}
+.list-image {
+  display: flex;
+  align-items: center;
+  width: 120px;
+}
 
 /* Mobile Styles */
 @media (max-width: 700px) {
@@ -524,10 +555,9 @@ i.fa-car {
 
   /* Profile Page */
 
-  .profile-top img,
-  .profile img {
-    width: 200px;
-    margin: auto;
+  .list-image {
+    display: flex;
+    align-items: center;
   }
 
   .profile-grid {

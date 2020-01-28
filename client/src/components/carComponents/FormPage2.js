@@ -1,7 +1,8 @@
 import React, { Fragment } from "react";
-import ListField from "../search/elements/ListField";
-import InputField from "../search/elements/InputField";
-import "../search/elements/styles.css";
+
+import ListField from "../layoutComponents/formElements/ListField";
+import InputField from "../layoutComponents/formElements/InputField";
+// import "../search/elements/styles.css";
 
 const colors = [
   { value: "white", name: "White" },

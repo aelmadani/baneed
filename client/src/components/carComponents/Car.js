@@ -1,6 +1,13 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { getCar } from "./actions/index";
+import { getCar } from "../../actions/index";
+import cars from "../../data/cars.json";
+
+const cities = [
+  { value: "cph", name: "Copenhagen" },
+  { value: "aarhus", name: "Århus" },
+  { value: "odense", name: "Odense" }
+];
 
 const Car = (props) => {
   const carId = props.match.params.id;
@@ -11,12 +18,22 @@ const Car = (props) => {
   }, []);
 
   const clickedCar = { ...props.car.car };
-
-  return (
+  const makevalue = cars.find((car) => car.value === clickedCar.make);
+  console.log(makevalue);
+  return !clickedCar ? (
+    <div class="progress">
+      <div class="indeterminate"></div>
+    </div>
+  ) : (
     <div>
       <div>
         <p>
-          {clickedCar.make} {clickedCar.model}
+          {clickedCar.make
+            ? cars.find((car) => car.value === clickedCar.make).name
+            : ""}{" "}
+          {clickedCar.model
+            ? cars.find((car) => car.value === clickedCar.model).name
+            : ""}
         </p>
         <p>{clickedCar.trim}</p>
       </div>
@@ -32,7 +49,13 @@ const Car = (props) => {
         <p>Color: </p>
         <p>{clickedCar.color}</p>
         <p>City: </p>
-        <p>{clickedCar.city}</p>
+        <p>
+          {clickedCar.city
+            ? cities.find((city) => city.value === clickedCar.city).name
+            : ""}
+        </p>
+        <p>photos: </p>
+        <p>{clickedCar.imageLinks ? clickedCar.imageLinks[0] : ""}</p>
         <br />
         <br />
         <div>

@@ -9,7 +9,7 @@ module.exports = (app) => {
   // Route: POST api/cars
   // Desc: Create new car
   // Access: Private
-  app.post("/api/cars", async (req, res) => {
+  app.post("/api/cars", requireLogin, async (req, res) => {
     try {
       // userId = await User.findById(req.user)._id;
       userId = "5e0874124a2fc00c4310dfa1";
@@ -26,7 +26,7 @@ module.exports = (app) => {
         aircon,
         parkCam,
         description,
-        filename
+        imageLinks
       } = req.body;
       const newCarData = {};
       newCarData.user = userId;
@@ -42,7 +42,7 @@ module.exports = (app) => {
       if (aircon) newCarData.aircon = aircon;
       if (parkCam) newCarData.parkCam = parkCam;
       if (description) newCarData.description = description;
-      if (filename) newCarData.filename = filename;
+      if (imageLinks) newCarData.imageLinks = imageLinks;
 
       const newCar = new Car(newCarData);
       console.log(newCar.toJSON());
@@ -63,7 +63,7 @@ module.exports = (app) => {
   //   // req.file is the `avatar` file
   //   // req.body will hold the text fields, if there were any
   // });
-  app.post("/api/upload", (req, res) => {
+  app.post("/api/upload", requireLogin, (req, res) => {
     // Set The Storage Engine
     const storage = multer.diskStorage({
       destination: "../client/public/uploads",

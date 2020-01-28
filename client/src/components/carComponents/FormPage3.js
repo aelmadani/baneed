@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
-import CheckBoxField from "../search/elements/CheckBoxField";
-import TextField from "../search/elements/TextField";
-import "../search/elements/styles.css";
+import CheckBoxField from "../layoutComponents/formElements/CheckBoxField";
+import TextField from "../layoutComponents/formElements/TextField";
+// import "../search/elements/styles.css";
 
 const FormPage3 = (props) => {
   const { values } = props;
