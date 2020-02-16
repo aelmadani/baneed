@@ -5,6 +5,11 @@ export default function(state = null, action) {
   switch (action.type) {
     case actionTypes.FETCH_USER:
       return action.payload || false; // if empty string => return false
+    case actionTypes.ADD_TO_FAV:
+      return {
+        ...state,
+        favList: action.payload
+      };
     default:
       return state;
   }

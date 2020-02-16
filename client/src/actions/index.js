@@ -38,16 +38,12 @@ export const newCar = (formData) => async (dispatch) => {
   // formData.delete('images');
   console.log(formData);
   try {
-    const res = await axios.post(`/api/cars`, formData, {
+    const config = {
       headers: {
         "Content-Type": "application/json"
       }
-    });
-    // await axios.post(`/api/upload`, imageData, {
-    //   headers: {
-    //     "Content-Type": "multipart/form-data"
-    //   }
-    // });
+    };
+    const res = await axios.post(`/api/cars`, formData, config);
 
     dispatch({
       type: actionTypes.NEWCAR_SUCCESS,
@@ -66,6 +62,37 @@ export const getCar = (carId) => async (dispatch) => {
     const res = await axios.get(`/api/cars/${carId}`);
     dispatch({
       type: actionTypes.FETCH_CAR,
+      payload: res.data
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const addToFavList = (carId) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+    const res = await axios.post(`/api/favorites/${carId}`);
+    dispatch({
+      type: actionTypes.ADD_TO_FAV,
+      payload: res.data
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getUsersCars = (userId) => async (dispatch) => {
+  try {
+    // const link = `/api/users/${userId}/cars`;
+    // console.log("link: " + link);
+    const res = await axios.get(`/api/users/${userId}/cars`);
+    dispatch({
+      type: actionTypes.FETCH_USER_CARS,
       payload: res.data
     });
   } catch (err) {

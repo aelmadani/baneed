@@ -8,6 +8,7 @@ import FormPage1 from "./FormPage1";
 import FormPage2 from "./FormPage2";
 import FormPage3 from "./FormPage3";
 import FormPage4 from "./FormPage4";
+import FormPage5 from "./FormPage5";
 
 const CarForm = (props) => {
   const [step, setStep] = useState(1);
@@ -107,6 +108,8 @@ const CarForm = (props) => {
           saveCar={() => submit()}
         />
       );
+    case 5:
+      return <FormPage5 />;
   }
   return <div></div>;
 };

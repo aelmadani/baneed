@@ -112,16 +112,16 @@ const AdvancedSearch = (props) => {
       .map((key) => key + "=" + searchObj[key])
       .join("&");
 
-    console.log("query string from advanced " + queryString);
+    // console.log("query string from advanced " + queryString);
 
     props.history.push("/cars?" + queryString);
 
-    console.log(searchObj);
+    // console.log(searchObj);
   };
 
   return (
     <div className="form-wrapper col s12 m6">
-      <h2 className="form-title">Search</h2>
+      <h2 className="form-title">Advanced Search</h2>
       <form className="form" onSubmit={(e) => onSubmit(e)}>
         <ListField
           name="car-make"

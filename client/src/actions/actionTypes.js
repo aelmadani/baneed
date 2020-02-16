@@ -13,3 +13,5 @@ export const FETCH_USER = "FETCH_USER";
 export const SEARCH_SUCCESS = "SEARCH_SUCCESS";
 export const FETCH_CAR = "FETCH_CAR";
 export const NEWCAR_SUCCESS = "NEWCAR_SUCCESS";
+export const ADD_TO_FAV = "ADD_TO_FAV";
+export const FETCH_USER_CARS = "FETCH_USER_CARS";

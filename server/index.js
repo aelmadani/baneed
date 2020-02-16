@@ -23,22 +23,6 @@ mongoose.connect(keys.mongoURI, {
   useUnifiedTopology: true
 });
 
-// const storage = multer.diskStorage({
-//   destination: "../../client/public/uploads/",
-//   filename: function(req, file, cb) {
-//     cb(
-//       null,
-//       file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-//     );
-//   }
-// });
-
-// // init upload
-// const upload = multer({
-//   storage: storage,
-//   limits: { fieldSize: 1000000 }
-// }).single("carImage");
-
 const app = express();
 // app.use(express.json());
 app.use(bodyParser.json());

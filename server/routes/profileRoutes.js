@@ -25,28 +25,35 @@ module.exports = (app) => {
     }
   });
 
-  // Route: get /api/dashboard/favorites
+  // Route: get /api/favorites
   // Desc: view fav list
   // Access: Private
-  app.get("/api/dashboard/favorites", requireLogin, (req, res) => {
-    //const user = await User.findById(req.user.id);
-    res.send(req.user.favList);
+  app.get("/api/favorites", requireLogin, async (req, res) => {
+    const user = await User.findById(req.user.id);
+    const favList = user.favList;
+    let cars = [];
+
+    cars = await Car.find({ _id: { $in: favList } });
+
+    res.send(cars);
   });
 
-  // Route: post /api/dashboard/favorites
+  // Route: post /api/favorites
   // Desc: add to fav list
   // Access: Private
-  app.post("/api/dashboard/favorites", requireLogin, async (req, res) => {
+  app.post("/api/favorites/:carId", requireLogin, async (req, res) => {
+    // console.log("req.params.carId:" + req.params.carId);
+    console.log(req.user);
+
     const user = await User.findById(req.user.id);
     let newFavList = user.favList;
-    const index = newFavList.findIndex(
-      (fav) => fav._id.toString() === req.body.favId.toString()
-    );
-    if (index > -1) {
-      console.log("Already fav");
-      return res.send(user.favList);
+
+    if (user.favList.filter((fav) => fav === req.params.carId).length > 0) {
+      newFavList = newFavList.filter((fav) => fav !== req.params.carId);
+    } else {
+      newFavList.push(req.params.carId);
     }
-    newFavList.push(req.body.favId);
+
     user.favList = newFavList;
     user.save();
 

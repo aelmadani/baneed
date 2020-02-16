@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { getCar } from "../../actions/index";
+import { withRouter } from "react-router-dom";
+import { getCar, addToFavList } from "../../actions/index";
 import cars from "../../data/cars.json";
+import Slideshow from "../layoutComponents/Slideshow/Slideshow";
+import BackButton from "../layoutComponents/BackButton";
 
 const cities = [
   { value: "cph", name: "Copenhagen" },
@@ -15,59 +18,130 @@ const Car = (props) => {
 
   useEffect(() => {
     props.getCar(carId);
-  }, []);
+  }, [props.getCar]);
 
   const clickedCar = { ...props.car.car };
+  let carLinks = clickedCar.imageLinks;
+
   const makevalue = cars.find((car) => car.value === clickedCar.make);
-  console.log(makevalue);
+  // console.log(makevalue);
+
+  const renderFavCell = (carId) => {
+    if (props.auth) {
+      if (props.auth.favList.includes(carId)) {
+        return (
+          <div
+            onClick={() => handleFav(carId)}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer"
+            }}
+          >
+            <span
+              className="orange-text text-accent-3 "
+              style={{ fontSize: "1rem" }}
+            >
+              Remove from favorites{" "}
+            </span>
+            <i class="material-icons orange-text text-accent-3  ">favorite</i>
+          </div>
+        );
+      } else {
+        return (
+          <div
+            onClick={() => handleFav(carId)}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer"
+            }}
+          >
+            <span
+              className="orange-text text-accent-3 "
+              style={{ fontSize: "1rem" }}
+            >
+              {" "}
+              Add to favorites{" "}
+            </span>
+
+            <i class="material-icons orange-text text-accent-3">
+              favorite_border
+            </i>
+          </div>
+        );
+      }
+    }
+  };
+  const handleFav = (id) => {
+    props.addToFavList(id);
+  };
+
   return !clickedCar ? (
     <div class="progress">
       <div class="indeterminate"></div>
     </div>
   ) : (
-    <div>
-      <div>
-        <p>
+    <div style={{ background: "#F8F8F8", padding: "1rem 0" }}>
+      <div className="car-title">
+        <span>
           {clickedCar.make
             ? cars.find((car) => car.value === clickedCar.make).name
             : ""}{" "}
           {clickedCar.model
             ? cars.find((car) => car.value === clickedCar.model).name
-            : ""}
-        </p>
-        <p>{clickedCar.trim}</p>
+            : ""}{" "}
+          {clickedCar.trim}
+        </span>
+        <br />
+        {clickedCar._id ? renderFavCell(clickedCar._id.toString()) : ""}
       </div>
-      <div>
-        <p>Price: </p>
-        <p>{clickedCar.price} DKK</p>
-        <p>Year: </p>
-        <p>{clickedCar.year}</p>
-        <p>Mileage: </p>
-        <p>{clickedCar.mileage} km</p>
-        <p>Gear Type: </p>
-        {clickedCar.autoGear ? <p>Automatic</p> : <p>Manual</p>}
-        <p>Color: </p>
-        <p>{clickedCar.color}</p>
-        <p>City: </p>
+      {clickedCar.imageLinks ? (
+        <Slideshow imageLinks={clickedCar.imageLinks} />
+      ) : (
+        ""
+      )}
+
+      <div className="car-info">
+        <h5>Car info</h5>
+        <p>
+          Price: <span>{clickedCar.price} DKK</span> , Year:{" "}
+          <span>{clickedCar.year}</span>, Mileage:{" "}
+          <span>{clickedCar.mileage} km.</span>
+        </p>
+        <h5>More info</h5>
+        <p>
+          {clickedCar.autoGear ? (
+            <span>Automatic Gear</span>
+          ) : (
+            <span>Manual Gear</span>
+          )}
+          , color: {clickedCar.color}
+          {clickedCar.aircon ? <span>, aircondition</span> : ""}
+          {clickedCar.parkCam ? <span>, parking camera</span> : ""}.
+        </p>
+        <h5>Location</h5>
         <p>
           {clickedCar.city
             ? cities.find((city) => city.value === clickedCar.city).name
             : ""}
         </p>
-        <p>photos: </p>
-        <p>{clickedCar.imageLinks ? clickedCar.imageLinks[0] : ""}</p>
-        <br />
-        <br />
-        <div>
-          <img src={clickedCar.filename} alt="" />
-        </div>
       </div>
+      <br />
+      <br />
+      <BackButton />
+      <br />
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  car: state.car
+  car: state.car,
+  auth: state.auth
 });
 
-export default connect(mapStateToProps, { getCar })(Car);
+export default connect(mapStateToProps, { getCar, addToFavList })(
+  withRouter(Car)
+);

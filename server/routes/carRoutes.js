@@ -11,8 +11,6 @@ module.exports = (app) => {
   // Access: Private
   app.post("/api/cars", requireLogin, async (req, res) => {
     try {
-      // userId = await User.findById(req.user)._id;
-      userId = "5e0874124a2fc00c4310dfa1";
       const {
         make,
         model,
@@ -29,7 +27,7 @@ module.exports = (app) => {
         imageLinks
       } = req.body;
       const newCarData = {};
-      newCarData.user = userId;
+      newCarData.user = req.user._id;
       if (make) newCarData.make = make;
       if (model) newCarData.model = model;
       if (trim) newCarData.trim = trim;
