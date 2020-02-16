@@ -4,6 +4,7 @@ const keys = require("../config/keys");
 const mongoose = require("mongoose");
 
 const User = mongoose.model("users");
+const config = require("config");
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -18,9 +19,9 @@ passport.deserializeUser((id, done) => {
 passport.use(
   new FacebookStrategy(
     {
-      clientID: keys.facebookClientID,
-      clientSecret: keys.facebookClientSecret,
-      callbackURL: keys.facebookCallbackUrl,
+      clientID: config.get("facebookClientID"),
+      clientSecret: config.get("facebookClientSecret"),
+      callbackURL: config.get("facebookCallbackUrl"),
       profileFields: ["emails", "name"]
     },
     async (accessToken, refreshToken, profile, done) => {

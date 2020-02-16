@@ -9,6 +9,7 @@ const multer = require("multer");
 const authRoutes = require("./routes/authRoutes");
 const carRoutes = require("./routes/carRoutes");
 const profileRoutes = require("./routes/profileRoutes");
+const config = require("config");
 
 const flash = require("connect-flash");
 
@@ -18,7 +19,7 @@ require("./services/passport-facebook");
 
 // require("./services/passport-local")(passport);
 
-mongoose.connect(keys.mongoURI, {
+mongoose.connect(config.get("mongoURI"), {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -30,7 +31,7 @@ app.use(bodyParser.json());
 app.use(
   cookieSession({
     maxAge: 60 * 60 * 1000,
-    keys: [keys.cookieKey]
+    keys: [config.get("cookieKey")]
   })
 );
 
