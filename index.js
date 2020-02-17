@@ -4,7 +4,6 @@ const cookieSession = require("cookie-session");
 const passport = require("passport");
 const bodyParser = require("body-parser");
 const path = require("path");
-const multer = require("multer");
 const authRoutes = require("./routes/authRoutes");
 const carRoutes = require("./routes/carRoutes");
 const profileRoutes = require("./routes/profileRoutes");
@@ -56,8 +55,9 @@ if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
-} else {
-  app.use(express.static("./client/public"));
 }
+// else {
+//   app.use(express.static("./client/public"));
+// }
 const PORT = process.env.PORT || 5060;
 app.listen(PORT);
