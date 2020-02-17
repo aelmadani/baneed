@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const keys = require("./config/keys");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 const bodyParser = require("body-parser");
@@ -58,7 +57,7 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 } else {
-  app.use(express.static("client/public"));
+  app.use(express.static("./client/public"));
 }
 const PORT = process.env.PORT || 5060;
 app.listen(PORT);

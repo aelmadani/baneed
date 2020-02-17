@@ -2,7 +2,8 @@ const passport = require("passport");
 
 //const requireLogin = require("../middleware/requireLogin");
 const User = require("../models/User");
-const keys = require("../config/keys");
+const config = require("config");
+
 // const { ensureAuthenticated } = require("../config/auth");
 
 module.exports = (app) => {
@@ -20,7 +21,7 @@ module.exports = (app) => {
     (req, res) => {
       //   res.send({ hej: "logged" });
       console.log(req.user);
-      res.redirect(keys.redirectDomain);
+      res.redirect(config.get("redirectDomain"));
     }
   );
 
